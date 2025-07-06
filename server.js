@@ -13,7 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // ✅ CORS fix
 app.use((req, res, next) => {
-  const allowedOrigin = 'https://elopre0701.github.io';
+  const allowedOrigin = 'https://aris070103.github.io';
   res.setHeader('Access-Control-Allow-Origin', allowedOrigin);
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
