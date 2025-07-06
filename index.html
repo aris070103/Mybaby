@@ -163,7 +163,7 @@ popup.style.display = "none";
 </script>
 <script>
 document.getElementById('yes-btn').addEventListener('click', () => {
-  fetch('https://one-j6ls.onrender.com./send-email', {
+  fetch('https://one-j6ls.onrender.com/send-email', {  // ✅ no trailing dot
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -176,6 +176,7 @@ document.getElementById('yes-btn').addEventListener('click', () => {
   })
   .then(data => {
     console.log('✅ Email sent:', data);
+    alert('Email sent successfully!');
   })
   .catch(error => {
     console.error('❌ Error:', error);
@@ -183,6 +184,7 @@ document.getElementById('yes-btn').addEventListener('click', () => {
   });
 });
 </script>
+
 
 
 </body>
