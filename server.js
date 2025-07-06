@@ -1,35 +1,28 @@
 const express = require('express');
 const nodemailer = require('nodemailer');
 const dotenv = require('dotenv');
+const cors = require('cors'); // ✅ Use this instead of manual CORS headers
+
+dotenv.config();
 const app = express();
 
-// Load environment variables
-dotenv.config();
-
 const PORT = process.env.PORT || 3000;
-const ALLOWED_ORIGIN = 'https://aris070103.github.io';
 const EMAIL_USER = process.env.EMAIL_USER;
 const EMAIL_PASS = process.env.EMAIL_PASS;
+const ALLOWED_ORIGIN = 'https://aris070103.github.io';
 
-// Middleware to parse request bodies
+// ✅ Middleware
+app.use(cors({
+  origin: ALLOWED_ORIGIN,
+  methods: ['GET', 'POST', 'OPTIONS'],
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-With', 'Accept']
+}));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// ✅ CORS middleware
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', ALLOWED_ORIGIN);
-  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-
-  if (req.method === 'OPTIONS') {
-    return res.sendStatus(204);
-  }
-
-  next();
-});
-
-// ✅ Email endpoint
+// ✅ POST /send-email endpoint
 app.post('/send-email', async (req, res) => {
   const { response } = req.body;
 
@@ -59,11 +52,11 @@ app.post('/send-email', async (req, res) => {
 
   } catch (error) {
     console.error('❌ Email send error:', error);
-    res.status(500).json({ success: false, message: 'Failed to send email.', error });
+    res.status(500).json({ success: false, message: 'Failed to send email.', error: error.message });
   }
 });
 
 // ✅ Start server
 app.listen(PORT, () => {
-  console.log(`✅ Server running on http://localhost:${PORT}`);
+  console.log(`✅ Server running on port ${PORT}`);
 });
